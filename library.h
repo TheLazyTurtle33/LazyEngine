@@ -1,0 +1,6 @@
+#ifndef LAZYENGINE_LIBRARY_H
+#define LAZYENGINE_LIBRARY_H
+
+void hello();
+
+#endif //LAZYENGINE_LIBRARY_H
