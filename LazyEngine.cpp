@@ -2,6 +2,12 @@
 
 #include <iostream>
 
-void hello() {
-    std::cout << "Hello, World!" << std::endl;
+namespace LazyEngine{
+    LazyEngine::LazyEngine() = default;
+
+    LazyEngine::~LazyEngine() = default;
+
+    void LazyEngine::addUpdateFunc(void (*func)(int deltaT)) {
+        m_update = func;
+    }
 }
