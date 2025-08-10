@@ -1,18 +1,20 @@
-//
-// Created by jro03 on 2025/08/10.
-//
-
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 
 #include "property.h"
+#include "../math/math.h"
 
+namespace property {
 
-class transform: property::Property {
-    public:
-    static std::string getPropertyType();
+// Public inheritance so it’s usable via a base pointer
+class Transform2D final : public Property {
+public:
+    LEMath::Vector2 position;
+    LEMath::Vector2 scale;
+    float rotation;
 };
 
 
+} // namespace property
 
-#endif //TRANSFORM_H
+#endif // TRANSFORM_H

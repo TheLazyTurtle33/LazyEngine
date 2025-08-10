@@ -1,19 +1,14 @@
-//
-// Created by jro03 on 2025/08/10.
-//
-
-#ifndef POROPERTY_H
-#define POROPERTY_H
-#include <string>
-
+#ifndef PROPERTY_H
+#define PROPERTY_H
 
 namespace property {
 
+    // Polymorphic base for all properties/components
     class Property {
     public:
-        std::string getPropertyType();
+        virtual ~Property() = default;
     };
-}
 
+} // namespace property
 
-#endif //POROPERTY_H
+#endif // PROPERTY_H
