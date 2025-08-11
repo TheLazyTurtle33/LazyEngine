@@ -34,9 +34,13 @@ add_library(LazyEngine STATIC Engine.cpp
         math/vector.h
         property/rendererable.cpp
         property/rendererable.h
-        render/scene.cpp
-        render/scene.h
         property/property.cpp
         math/consts.h
+        scene.cpp
+        scene.h
+        render/renderer.cpp
+        render/renderer.h
+        Module.cpp
+        Module.h
 )
 target_link_libraries(LazyEngine PRIVATE glfw glad)

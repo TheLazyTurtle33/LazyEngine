@@ -7,16 +7,18 @@
 
 property::Transform2D::Transform2D() = default;
 
-property::Transform2D::~Transform2D() = default;
-
-void property::Transform2D::start() {
-}
-
-void property::Transform2D::update(int deltaT) {
-}
+// property::Transform2D::~Transform2D() = default;
+//
+// void property::Transform2D::start() {
+//     return;
+// }
+//
+// void property::Transform2D::update(int deltaT) {
+//     return;
+// }
 
 void property::Transform2D::destroy() {
-    static_cast<LazyEngine::Module>(m_parent).removeProperty<typename property::Transform2D>();
+    m_parent->removeProperty<typename property::Transform2D>();
 }
 
 void property::Transform2D::setPosition(const LEMath::Vector2& position) {

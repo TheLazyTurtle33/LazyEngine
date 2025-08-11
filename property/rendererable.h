@@ -6,12 +6,14 @@
 #define RENDERERABLE_H
 #include "property.h"
 
+
+
 namespace property {
 
 class rendererable : public Property {
 
     public:
-    void start() override;
+    // void start() override;
 
 };
 

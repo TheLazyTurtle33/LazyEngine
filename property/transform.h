@@ -1,7 +1,7 @@
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 
-#include "../Engine.h"
+
 #include "property.h"
 #include "../math/math.h"
 
@@ -11,11 +11,11 @@ namespace property {
 class Transform2D : public Property {
 public:
     Transform2D();
-    ~Transform2D() override;
+    // ~Transform2D();
 
-    void start() override;
-    void update(int deltaT) override;
-    void destroy() override;
+    // void start();
+    // void update(int deltaT);
+    void destroy();
 
     void setPosition(const LEMath::Vector2& position);
     void setPosition(float x, float y);

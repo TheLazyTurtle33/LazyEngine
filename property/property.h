@@ -1,9 +1,11 @@
 #ifndef PROPERTY_H
 #define PROPERTY_H
 
-#include "transform.h"
-#include "rendererable.h"
+#include "../Module.h"
 
+namespace LazyEngine {
+    class Module;
+}
 
 namespace property {
 
@@ -11,10 +13,12 @@ namespace property {
     class Property {
     public:
         explicit Property(LazyEngine::Module *parent);
-        virtual ~Property() = default;
-        virtual void start() = 0;
-        virtual void update(int deltaT) = 0;
-        virtual void destroy() = 0;
+        Property();
+        ~Property() = default;
+        void start();
+        void update(int deltaT);
+        void destroy();
+        void setParent(LazyEngine::Module* parent);
 
     protected:
         LazyEngine::Module* m_parent = nullptr;

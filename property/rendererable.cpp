@@ -5,8 +5,8 @@
 #include "rendererable.h"
 
 namespace property {
-    void rendererable::start() {
-
-    }
+    // void rendererable::start() {
+    //
+    // }
 
 } // property
