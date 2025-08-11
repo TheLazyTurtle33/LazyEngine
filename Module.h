@@ -11,6 +11,10 @@
 #include <vector>
 #include "property/property.h"
 
+namespace render {
+    class renderObject;
+}
+
 namespace property {
     class Property;
 }
@@ -38,6 +42,10 @@ namespace LazyEngine {
 
         template <typename T>
         requires std::derived_from<T, property::Property>
+        const T* getProperty() const noexcept;
+
+        template <typename T>
+        requires std::derived_from<T, property::Property>
         bool hasProperty() const noexcept;
 
         template <typename T>
@@ -50,6 +58,8 @@ namespace LazyEngine {
         void removeChild(int index);
         void removeChild(const char* name);
         void removeChild(const std::string& name);
+
+        std::vector<render::renderObject> getRenderObjects() const;
 
     private:
         std::string m_name;

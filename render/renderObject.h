@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "Colour.h"
+#include "Shape.h"
 
 namespace render {
 
@@ -19,6 +20,15 @@ public:
     renderObject() = default;
     renderObject(std::vector<float> verts, std::vector<unsigned int> inds, Colour::Colour col)
         : vertices(std::move(verts)), indices(std::move(inds)), colour(col) {}
+    renderObject(const Shape::Shape& shape) {
+        for (auto& v : shape.vertices) {
+            vertices.push_back(v.x);
+            vertices.push_back(v.y);
+            vertices.push_back(0.0f);
+        }
+        indices = shape.indices;
+        colour = shape.colour;
+    }
 };
 
 } // render

@@ -42,7 +42,7 @@ private:
 
 
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-        renderer* self = static_cast<renderer*>(glfwGetWindowUserPointer(window));
+        auto* self = static_cast<renderer*>(glfwGetWindowUserPointer(window));
         if (self) {
             self->resize(width, height);
         }

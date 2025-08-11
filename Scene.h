@@ -19,6 +19,8 @@ class Scene {
 
         void addRootModule(LazyEngine::Module* module);
 
+        [[nodiscard]] std::vector<render::renderObject> getRenderObjects() const;
+
 
     private:
         std::vector<LazyEngine::Module*> m_root_modules;

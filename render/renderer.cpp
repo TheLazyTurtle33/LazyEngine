@@ -60,6 +60,7 @@ static const char* fragmentShaderSource = R"(
             return false;
         }
         glfwMakeContextCurrent(m_window);
+        glfwSetWindowUserPointer(m_window, this);
 
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
             std::cerr << "Failed to init GLAD\n";

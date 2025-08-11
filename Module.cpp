@@ -7,6 +7,9 @@
 #include <vector>
 #include "Module.h"
 
+#include "property/rendererable.h"
+#include "render/renderObject.h"
+
 namespace LazyEngine {
     Module::Module(const std::string &name) {
             m_name = name;
@@ -52,6 +55,19 @@ namespace LazyEngine {
         removeChild(name.c_str());
     }
 
+    std::vector<render::renderObject> Module::getRenderObjects() const {
+        std::vector<render::renderObject> objects;
+        if (auto* r = getProperty<property::rendererable>()) {
+                // use existing
+            const render::renderObject object{r->getShape()};
+            objects.push_back(object);
+        }
+        for (auto &child : m_children) {
+            objects.insert(objects.end(), child->getRenderObjects().begin(), child->getRenderObjects().end());
+        }
+        return objects;
+    }
+
 
     void Module::start() {
         for (auto &child : m_children) {
@@ -87,6 +103,13 @@ namespace LazyEngine {
 
     template<typename T> requires std::derived_from<T, property::Property>
     T* Module::getProperty() noexcept {
+        const auto key = std::type_index(typeid(T));
+        auto it = m_properties.find(key);
+        return (it == m_properties.end()) ? nullptr : static_cast<T*>(it->second.get());
+    }
+
+    template<typename T> requires std::derived_from<T, property::Property>
+     const T* Module::getProperty() const noexcept {
         const auto key = std::type_index(typeid(T));
         auto it = m_properties.find(key);
         return (it == m_properties.end()) ? nullptr : static_cast<T*>(it->second.get());

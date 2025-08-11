@@ -21,6 +21,10 @@ namespace LazyEngine {
 
         void addUpdateFunc(void (*func)(double deltaT));
 
+        void setScene(const Scene& scene) {
+            m_currentScene = scene;
+        }
+
     private:
         Scene m_currentScene;
         render::renderer m_renderer;

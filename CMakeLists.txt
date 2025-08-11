@@ -55,5 +55,7 @@ add_library(LazyEngine STATIC Engine.cpp
         render/renderObject.h
         render/colour.cpp
         render/colour.h
+        render/shape.cpp
+        render/shape.h
 )
 target_link_libraries(LazyEngine PRIVATE glfw glad glm)

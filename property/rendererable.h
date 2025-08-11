@@ -5,15 +5,30 @@
 #ifndef RENDERERABLE_H
 #define RENDERERABLE_H
 #include "property.h"
-
-
+#include "transform.h"
+#include "../render/Shape.h"
 
 namespace property {
 
 class rendererable : public Property {
 
-    public:
-    // void start() override;
+public:
+    explicit rendererable();
+    // void start();
+    // void update(int deltaT);
+    // void destroy();
+
+    void setShape(Shape::Shape shape);
+    void setShape(std::vector<LEMath::Vector2> verts, std::vector<unsigned int> inds);
+    void setTransform(Transform2D *transform);
+    [[nodiscard]] Shape::Shape getShape() const;
+
+
+private:
+    Transform2D *m_transform = nullptr;
+    std::vector<LEMath::Vector2> vertices; // x, y, z
+    std::vector<unsigned int> indices;
+    Shape::Shape m_shape;
 
 };
 

@@ -20,4 +20,12 @@ namespace LazyEngine {
     void Scene::addRootModule(LazyEngine::Module *module) {
         m_root_modules.push_back(module);
     }
+
+    std::vector<render::renderObject> Scene::getRenderObjects() const {
+        std::vector<render::renderObject> objects;
+        for (auto &modules : m_root_modules) {
+            objects.insert(objects.end(), modules->getRenderObjects().begin(), modules->getRenderObjects().end());
+        }
+        return objects;
+    }
 } // LazyEngine

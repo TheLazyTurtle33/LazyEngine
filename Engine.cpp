@@ -2,6 +2,9 @@
 #include <iostream>
 #include <chrono>
 
+#include "property/rendererable.h"
+#include "property/transform.h"
+
 
 namespace LazyEngine{
 
@@ -27,33 +30,33 @@ namespace LazyEngine{
 
             const double deltaT = elapsed.count(); // seconds as double
 
-            // Rectangle vertices & indices
-            std::vector<float> verts = {
-                200,  150, 0.0f, // top right
-                200, -150, 0.0f, // bottom right
-               -200, -150, 0.0f, // bottom left
-               -200,  150, 0.0f  // top left
-            };
-            std::vector<float> verts2 = {
-                0.4f,  0.4f, 0.0f, // top right
-                0.4f, -0.4f, 0.0f, // bottom right
-               -0.4f, -0.4f, 0.0f, // bottom left
-               -0.4f,  0.4f, 0.0f  // top left
-           };
-            std::vector<unsigned int> inds = {
-                0, 1, 3,
-                1, 2, 3
-            };
-
-            render::renderObject rect(verts, inds, Colour::Red);
-            render::renderObject rect2(verts2, inds, Colour::Blue);
-
-            std::vector<render::renderObject> objs = { rect, rect2 };
+           //  // Rectangle vertices & indices
+           //  std::vector<float> verts = {
+           //      200,  150, 0.0f, // top right
+           //      200, -150, 0.0f, // bottom right
+           //     -200, -150, 0.0f, // bottom left
+           //     -200,  150, 0.0f  // top left
+           //  };
+           //  std::vector<float> verts2 = {
+           //      0.4f,  0.4f, 0.0f, // top right
+           //      0.4f, -0.4f, 0.0f, // bottom right
+           //     -0.4f, -0.4f, 0.0f, // bottom left
+           //     -0.4f,  0.4f, 0.0f  // top left
+           // };
+           //  std::vector<unsigned int> inds = {
+           //      0, 1, 3,
+           //      1, 2, 3
+           //  };
+           //
+           //  render::renderObject rect(verts, inds, Colour::Red);
+           //  render::renderObject rect2(verts2, inds, Colour::Blue);
+           //
+           //  std::vector<render::renderObject> objs = { rect, rect2 };
 
 
             m_update_game(deltaT);
             m_renderer.clear();
-            m_renderer.render(objs);
+            m_renderer.render(m_currentScene.getRenderObjects());
 
 
             if (m_renderer.shouldClose()) {
@@ -68,8 +71,7 @@ namespace LazyEngine{
     void Engine::start(const int width, const int height,const char* title) {
         m_renderer.init(width, height, title);
         m_currentScene.init();
-
-        update();
+         update();
     }
 
 }
