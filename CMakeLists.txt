@@ -14,6 +14,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glfw)
 
+
+
 # GLAD
 FetchContent_Declare(
         glad
@@ -22,6 +24,13 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(glad)
 
+# GLM
+FetchContent_Declare(
+        glm
+        GIT_REPOSITORY https://github.com/g-truc/glm
+        GIT_TAG 1.0.1
+)
+FetchContent_MakeAvailable(glm)
 
 
 add_library(LazyEngine STATIC Engine.cpp
@@ -47,4 +56,4 @@ add_library(LazyEngine STATIC Engine.cpp
         render/colour.cpp
         render/colour.h
 )
-target_link_libraries(LazyEngine PRIVATE glfw glad)
+target_link_libraries(LazyEngine PRIVATE glfw glad glm)

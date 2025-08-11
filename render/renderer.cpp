@@ -22,7 +22,6 @@ static const char* fragmentShaderSource = R"(
         FragColor = uColor;
     }
 )";
-
 // Shader compiler helper
     unsigned int renderer::compileShader(unsigned int type, const char* source) {
         unsigned int shader = glCreateShader(type);
@@ -39,7 +38,13 @@ static const char* fragmentShaderSource = R"(
         return shader;
     }
 
+    void renderer::resize(int width, int height) {
+        m_windowSize = {width,height};
+        glViewport(0, 0, width, height);
+    }
+
     bool renderer::init(int width, int height, const char* title) {
+        m_windowSize = {width,height};
         if (!glfwInit()) {
             std::cerr << "Failed to init GLFW\n";
             return false;
@@ -60,7 +65,7 @@ static const char* fragmentShaderSource = R"(
             std::cerr << "Failed to init GLAD\n";
             return false;
         }
-
+        glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
         // Compile shaders
         unsigned int vertexShader = compileShader(GL_VERTEX_SHADER, vertexShaderSource);
         unsigned int fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
@@ -88,6 +93,7 @@ static const char* fragmentShaderSource = R"(
     }
 
     void renderer::draw(const renderObject& object) {
+        renderObject obj = toNDC(object,m_windowSize);
         unsigned int vao, vbo, ebo;
 
         glGenVertexArrays(1, &vao);
@@ -97,21 +103,21 @@ static const char* fragmentShaderSource = R"(
         glBindVertexArray(vao);
 
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, object.vertices.size() * sizeof(float), object.vertices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, obj.vertices.size() * sizeof(float), obj.vertices.data(), GL_STATIC_DRAW);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, object.indices.size() * sizeof(unsigned int), object.indices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, obj.indices.size() * sizeof(unsigned int), obj.indices.data(), GL_STATIC_DRAW);
 
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
 
         glUseProgram(m_shaderProgram);
 
-        auto rgba = object.colour.getRGBAIntensity();
+        auto rgba = obj.colour.getRGBAIntensity();
         int colorLoc = glGetUniformLocation(m_shaderProgram, "uColor");
         glUniform4f(colorLoc, rgba[0], rgba[1], rgba[2], rgba[3]);
 
-        glDrawElements(GL_TRIANGLES, object.indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, obj.indices.size(), GL_UNSIGNED_INT, 0);
 
         glDeleteVertexArrays(1, &vao);
         glDeleteBuffers(1, &vbo);
@@ -137,5 +143,18 @@ static const char* fragmentShaderSource = R"(
             m_window = nullptr;
         }
         glfwTerminate();
+    }
+
+    LEMath::Vector2 renderer::toNDC(const LEMath::Vector2& position,const LEMath::Vector2i& windowSize) {
+        return {position.x / (windowSize.x/2.0f)-1.0f, position.y / (windowSize.y/2.0f)-1.0f};
+    }
+
+    renderObject renderer::toNDC(renderObject objs, const LEMath::Vector2i &windowSize) {
+        for (int i = 0; i < objs.vertices.size(); i+=3) {
+            objs.vertices[i] = toNDC({objs.vertices[i],objs.vertices[i+1]},windowSize).x;
+            objs.vertices[i+1] = toNDC({objs.vertices[i],objs.vertices[i+1]},windowSize).y;
+            objs.vertices[i+2] = objs.vertices[i+2];
+        }
+        return objs;
     }
 } // render

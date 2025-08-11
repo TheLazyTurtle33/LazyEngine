@@ -16,4 +16,8 @@ namespace LazyEngine {
 
     void Scene::destroy() {
     }
+
+    void Scene::addRootModule(LazyEngine::Module *module) {
+        m_root_modules.push_back(module);
+    }
 } // LazyEngine

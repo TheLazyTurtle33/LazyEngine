@@ -22,7 +22,7 @@ namespace LazyEngine {
         void addUpdateFunc(void (*func)(double deltaT));
 
     private:
-        Scene currentScene;
+        Scene m_currentScene;
         render::renderer m_renderer;
         void (*m_update_game)(double deltaT) = nullptr;
 

@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "renderObject.h"
+#include "../math/vector.h"
 
 namespace render {
 
@@ -23,7 +24,8 @@ public:
     void draw(const renderObject& object);
     void render(const std::vector<renderObject>& objects);
     void destroy();
-    bool shouldClose() const;
+    [[nodiscard]] bool shouldClose() const;
+    void resize(int width, int height);
 
 
 
@@ -32,6 +34,20 @@ private:
     unsigned int m_shaderProgram = 0;
 
     unsigned int compileShader(unsigned int type, const char* source);
+
+
+    LEMath::Vector2i m_windowSize = {0,0};
+    static LEMath::Vector2 toNDC(const LEMath::Vector2& position,const LEMath::Vector2i& windowSize);
+    static renderObject toNDC(renderObject objs ,const LEMath::Vector2i& windowSize);
+
+
+    static void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+        renderer* self = static_cast<renderer*>(glfwGetWindowUserPointer(window));
+        if (self) {
+            self->resize(width, height);
+        }
+    }
+
 
 
 

@@ -7,7 +7,7 @@
 
 #include <vector>
 #include "Module.h"
-
+#include "render/renderObject.h"
 
 namespace LazyEngine {
 class Scene {
@@ -17,11 +17,11 @@ class Scene {
         void render();
         void destroy();
 
+        void addRootModule(LazyEngine::Module* module);
+
+
     private:
-        std::vector<LazyEngine::Module> m_all_modules;
-        // LazyEngine::Engine m_engine;
         std::vector<LazyEngine::Module*> m_root_modules;
-        std::vector<LazyEngine::Module*> m_rendererable_modules;
 };
 
 } // LazyEngine
