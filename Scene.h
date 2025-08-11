@@ -10,7 +10,7 @@
 
 
 namespace LazyEngine {
-class scene {
+class Scene {
     public:
         void init();
         void update();

@@ -2,11 +2,11 @@
 #define LAZYENGINE_LIBRARY_H
 #pragma once
 
-#include "scene.h"
+#include "Scene.h"
 #include "render/renderer.h"
 
 namespace LazyEngine {
-    class scene;
+    class Scene;
     class Engine {
     public:
 
@@ -17,12 +17,12 @@ namespace LazyEngine {
         }
 
         void start(int width, int height,const char* title);
-        static void stop();
+        void stop();
 
         void addUpdateFunc(void (*func)(double deltaT));
 
     private:
-        scene currentScene;
+        Scene currentScene;
         render::renderer m_renderer;
         void (*m_update_game)(double deltaT) = nullptr;
 
