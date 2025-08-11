@@ -159,6 +159,9 @@ namespace LEMath {
     class Matrix4x4 {
     public:
         Vector4 x, y, z, w;
+    public:
+        Matrix4x4(Vector4 x, Vector4 y, Vector4 z, Vector4 w);
+        ~Matrix4x4();
     };
 
     // To be implemented

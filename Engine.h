@@ -4,11 +4,19 @@
 #include <memory>
 #include <typeindex>
 #include <unordered_map>
+#include <vector>
 
 #include "property/property.h"
+#include "render/scene.h"
 
 namespace LazyEngine {
-    class Entity {
+    class Module {
+    public:
+        explicit Module(const std::string& name = "");
+        ~Module();
+
+        const std::string& getName() const noexcept;
+
     public:
         void start();
         void update(int deltaT);
@@ -16,61 +24,61 @@ namespace LazyEngine {
         // Add or get a property of type T. If it already exists, returns the existing one.
         template <typename T, typename... Args>
         requires std::derived_from<T, property::Property>
-        T& addProperty(Args&&... args) {
-            const auto key = std::type_index(typeid(T));
-            auto it = m_properties.find(key);
-            if (it != m_properties.end()) {
-                return *static_cast<T*>(it->second.get());
-            }
-            auto ptr = std::make_unique<T>(std::forward<Args>(args)...);
-            T* raw = ptr.get();
-            m_properties.emplace(key, std::move(ptr));
-            return *raw;
-        }
+        T& addProperty(Args&&... args);
 
         template <typename T>
         requires std::derived_from<T, property::Property>
-        T* getProperty() noexcept {
-            const auto key = std::type_index(typeid(T));
-            auto it = m_properties.find(key);
-            return (it == m_properties.end()) ? nullptr : static_cast<T*>(it->second.get());
-        }
+        T* getProperty();
 
         template <typename T>
         requires std::derived_from<T, property::Property>
-        const T* getProperty() const noexcept {
-            const auto key = std::type_index(typeid(T));
-            auto it = m_properties.find(key);
-            return (it == m_properties.end()) ? nullptr : static_cast<const T*>(it->second.get());
-        }
+        const T* getProperty() const noexcept;
 
         template <typename T>
         requires std::derived_from<T, property::Property>
-        bool hasProperty() const noexcept {
-            return m_properties.contains(std::type_index(typeid(T)));
-        }
+        bool hasProperty() const noexcept;
 
         template <typename T>
         requires std::derived_from<T, property::Property>
-        void removeProperty() noexcept {
-            m_properties.erase(std::type_index(typeid(T)));
-        }
+        void removeProperty() noexcept;
+
+        // Add a child entity
+        void addChild(std::unique_ptr<Module> module);
+        void removeChild(std::unique_ptr<Module> module);
+        void removeChild(int index);
+        void removeChild(const char* name);
+        void removeChild(const std::string& name);
 
     private:
+        std::string m_name;
         std::unordered_map<std::type_index, std::unique_ptr<property::Property>> m_properties;
+        std::vector<std::unique_ptr<Module>> m_children;
+
     };
 
     class Engine {
     public:
-        Engine();
-        ~Engine();
 
-        int start();
+    public:
+        Engine();
+        ~Engine() {
+            stop();
+        }
+
+
+        static void start(int width, int height,const char* title);
+        static void stop();
+
+
 
         void addUpdateFunc(void (*func)(int deltaT));
 
     private:
-        void (*m_update)(int deltaT){};
+        scene currentScene;
+        void (*m_update_game)(int deltaT) = nullptr;
+
+    private:
+        void update();
     };
 
 } // namespace LazyEngine

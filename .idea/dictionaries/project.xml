@@ -2,6 +2,7 @@
   <dictionary name="project">
     <words>
       <w>lazyengine</w>
+      <w>rendererable</w>
     </words>
   </dictionary>
 </component>
