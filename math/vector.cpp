@@ -89,6 +89,17 @@ namespace LEMath {
         y /= scalar;
         return *this;
     }
+
+    Vector2 rotatePoint(const Vector2& point, float radians) {
+        float cosA = std::cos(radians);
+        float sinA = std::sin(radians);
+
+        return {
+            point.x * cosA - point.y * sinA,
+            point.x * sinA + point.y * cosA
+        };
+    }
+
 #pragma endregion
 
 #pragma region Vector2i

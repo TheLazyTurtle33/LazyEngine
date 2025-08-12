@@ -27,6 +27,7 @@ namespace LEMath {
         Vector2& operator/=(const Vector2& other);
         Vector2& operator*=(float scalar);
         Vector2& operator/=(float scalar);
+        inline LEMath::Vector2 rotatePoint(const LEMath::Vector2& point, float radians);
 
     };
 
