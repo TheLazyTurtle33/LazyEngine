@@ -4,6 +4,8 @@
 
 #ifndef RENDERERABLE_H
 #define RENDERERABLE_H
+#include <utility>
+
 #include "property.h"
 #include "transform.h"
 #include "../render/Shape.h"
@@ -13,7 +15,8 @@ namespace property {
 class rendererable : public Property {
 
 public:
-    explicit rendererable();
+    rendererable();
+    explicit rendererable(Shape::Shape shape) : m_shape(std::move(shape)){};
     // void start();
     // void update(int deltaT);
     // void destroy();

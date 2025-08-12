@@ -71,7 +71,15 @@ namespace LazyEngine{
     void Engine::start(const int width, const int height,const char* title) {
         m_renderer.init(width, height, title);
         m_currentScene.init();
-         update();
+        Module test = Module("test");
+        test.addProperty<property::Transform2D>();
+        test.addProperty<property::rendererable>(Shape::triangle);
+        // r.setShape(Shape::triangle);
+
+
+        m_currentScene.addRootModule(&test);
+
+        update();
     }
 
 }

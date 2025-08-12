@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <vector>
 #include "Module.h"
+#include <algorithm>
 
 #include "property/rendererable.h"
 #include "render/renderObject.h"
@@ -74,7 +75,7 @@ namespace LazyEngine {
             child->start();
         }
         for (auto &property : m_properties) {
-            property.second->start();
+            property->start();
         }
     }
 
@@ -83,47 +84,69 @@ namespace LazyEngine {
             child->update(deltaT);
         }
         for (auto &property : m_properties) {
-            property.second->update(deltaT);
+            property->update(deltaT);
         }
     }
 
-    template<typename T, typename ... Args> requires std::derived_from<T, property::Property>
-    T & Module::addProperty(Args &&...args) {
-        const auto key = std::type_index(typeid(T));
-        auto it = m_properties.find(key);
-        if (it != m_properties.end()) {
-            return *static_cast<T*>(it->second.get());
+    template <typename T, typename... Args>
+T* Module::addProperty(Args&&... args) {
+        static_assert(std::is_base_of<property::Property, T>::value,
+                      "T must derive from property::Property");
+        auto prop = std::make_unique<T>(std::forward<Args>(args)...);
+        T* ptr = prop.get();
+        m_properties.emplace_back(std::move(prop));
+        return ptr;
+    }
+
+    template <typename T>
+    void Module::removeProperty() {
+        static_assert(std::is_base_of<property::Property, T>::value,
+                      "T must derive from property::Property");
+        m_properties.erase(
+            std::remove_if(m_properties.begin(), m_properties.end(),
+                [](const std::unique_ptr<property::Property>& p) {
+                    return dynamic_cast<T*>(p.get()) != nullptr;
+                }),
+            m_properties.end()
+        );
+    }
+
+    template <typename T>
+    std::vector<T*> Module::getPropertyAll() const {
+        static_assert(std::is_base_of<property::Property, T>::value,
+                      "T must derive from property::Property");
+        std::vector<T*> result;
+        for (auto& p : m_properties) {
+            if (auto casted = dynamic_cast<T*>(p.get())) {
+                result.push_back(casted);
+            }
         }
-        auto ptr = std::make_unique<T>(std::forward<Args>(args)...);
-        T* raw = ptr.get();
-        raw->setParent(this);
-        m_properties.emplace(key, std::move(ptr));
-        return *raw;
+        return result;
     }
 
-    template<typename T> requires std::derived_from<T, property::Property>
-    T* Module::getProperty() noexcept {
-        const auto key = std::type_index(typeid(T));
-        auto it = m_properties.find(key);
-        return (it == m_properties.end()) ? nullptr : static_cast<T*>(it->second.get());
+    template <typename T>
+    T* Module::getProperty(size_t index) const {
+        static_assert(std::is_base_of<property::Property, T>::value,
+                      "T must derive from property::Property");
+        size_t count = 0;
+        for (auto& p : m_properties) {
+            if (auto casted = dynamic_cast<T*>(p.get())) {
+                if (count++ == index) return casted;
+            }
+        }
+        return nullptr;
     }
 
-    template<typename T> requires std::derived_from<T, property::Property>
-     const T* Module::getProperty() const noexcept {
-        const auto key = std::type_index(typeid(T));
-        auto it = m_properties.find(key);
-        return (it == m_properties.end()) ? nullptr : static_cast<T*>(it->second.get());
+    template <typename T>
+    T* Module::getPropertyLast() const {
+        static_assert(std::is_base_of<property::Property, T>::value,
+                      "T must derive from property::Property");
+        for (auto it = m_properties.rbegin(); it != m_properties.rend(); ++it) {
+            if (auto casted = dynamic_cast<T*>(it->get())) {
+                return casted;
+            }
+        }
+        return nullptr;
     }
-
-    template<typename T> requires std::derived_from<T, property::Property>
-    bool Module::hasProperty() const noexcept {
-        return m_properties.contains(std::type_index(typeid(T)));
-    }
-
-    template<typename T> requires std::derived_from<T, property::Property>
-    void Module::removeProperty() noexcept {
-        m_properties.erase(std::type_index(typeid(T)));
-    }
-
 
 } // LazyEngine

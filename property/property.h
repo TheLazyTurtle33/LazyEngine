@@ -14,11 +14,11 @@ namespace property {
     public:
         explicit Property(LazyEngine::Module *parent);
         Property();
-        ~Property() = default;
-        void start();
-        void update(int deltaT);
-        void destroy();
-        void setParent(LazyEngine::Module* parent);
+        virtual ~Property() = default;
+        virtual void start();
+        virtual void update(int deltaT);
+        virtual void destroy();
+        virtual void setParent(LazyEngine::Module* parent);
 
     protected:
         LazyEngine::Module* m_parent = nullptr;

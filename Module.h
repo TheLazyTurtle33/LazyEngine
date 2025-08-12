@@ -5,10 +5,11 @@
 #ifndef MODULE_H
 #define MODULE_H
 
-#include <memory>
-#include <typeindex>
-#include <unordered_map>
 #include <vector>
+#include <memory>
+#include <type_traits>
+#include <cstddef>
+
 #include "property/property.h"
 
 namespace render {
@@ -33,24 +34,19 @@ namespace LazyEngine {
 
         // Add or get a property of type T. If it already exists, returns the existing one.
         template <typename T, typename... Args>
-        requires std::derived_from<T, property::Property>
-        T& addProperty(Args&&... args);
+        T* addProperty(Args&&... args);
 
         template <typename T>
-        requires std::derived_from<T, property::Property>
-        T* getProperty() noexcept;
+        void removeProperty();
 
         template <typename T>
-        requires std::derived_from<T, property::Property>
-        const T* getProperty() const noexcept;
+        std::vector<T*> getPropertyAll() const;
 
         template <typename T>
-        requires std::derived_from<T, property::Property>
-        bool hasProperty() const noexcept;
+        T* getProperty(size_t index = 0) const;
 
         template <typename T>
-        requires std::derived_from<T, property::Property>
-        void removeProperty() noexcept;
+        T* getPropertyLast() const;
 
         // Add a child entity
         void addChild(std::unique_ptr<Module> module);
@@ -63,7 +59,7 @@ namespace LazyEngine {
 
     private:
         std::string m_name;
-        std::unordered_map<std::type_index, std::unique_ptr<property::Property>> m_properties;
+        std::vector<std::unique_ptr<property::Property>> m_properties;
         std::vector<std::unique_ptr<Module>> m_children;
 
     };
