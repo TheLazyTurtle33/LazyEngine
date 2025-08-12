@@ -27,7 +27,9 @@ public:
     void setShape(Shape::Shape shape);
     void setShape(std::vector<LEMath::Vector2> verts, std::vector<unsigned int> inds);
     void setTransform(Transform2D *transform);
+
     [[nodiscard]] Shape::Shape getShapeTransformed() const;
+
 
 
 private:

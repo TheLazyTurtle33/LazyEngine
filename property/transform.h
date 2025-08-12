@@ -73,9 +73,8 @@ public:
 
     LEMath::Vector2 position = {0,0};
     LEMath::Vector2 scale = {1,1};
-    float rotation{0};
-
 private:
+    float rotation{0};
 
 };
 

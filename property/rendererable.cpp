@@ -6,6 +6,11 @@
 
 #include <utility>
 
+#ifndef WORLD_SCALE
+#define WORLD_SCALE 100.0f
+#endif
+
+
 namespace property {
 
     rendererable::rendererable(): m_shape(Shape::NULLShape) {
@@ -35,20 +40,25 @@ namespace property {
         m_transform = transform;
     }
 
+
+
     Shape::Shape rendererable::getShapeTransformed() const {
-        if (m_transform == nullptr) return m_shape;
         std::vector<LEMath::Vector2> transformedVerts;
         transformedVerts.reserve(m_shape.vertices.size());
 
+        const auto worldPos     = m_transform->getWorldPosition();
+        const auto worldScale   = m_transform->getWorldScale() * WORLD_SCALE;
+        const float worldRotRad = m_transform->getRotationR(); // radians
+
         for (auto v : m_shape.vertices) {
-            v *= m_transform->scale;      // scale
-            v += m_transform->position;   // translate
+            v *= worldScale;                 // scale
+            v = v.rotatePoint(worldRotRad); // rotate
+            v += worldPos;                   // translate
             transformedVerts.push_back(v);
         }
 
         Shape::Shape result(transformedVerts, m_shape.indices);
-        result.colour = m_shape.colour; // preserve colour
+        result.colour = m_shape.colour;
         return result;
-
     }
 } // property
