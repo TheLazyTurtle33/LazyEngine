@@ -55,7 +55,7 @@ namespace LazyEngine{
 
 
             m_update_game(deltaT);
-            m_renderer.clear();
+            m_renderer.clear(BGColour);
             m_renderer.render(m_currentScene.getRenderObjects());
 
 

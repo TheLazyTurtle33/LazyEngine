@@ -26,6 +26,7 @@ namespace LazyEngine {
         }
 
     private:
+        Colour::Colour BGColour = Colour::White;
         Scene m_currentScene;
         render::renderer m_renderer;
         void (*m_update_game)(double deltaT) = nullptr;
