@@ -90,12 +90,14 @@ namespace LEMath {
         return *this;
     }
 
-    Vector2& Vector2::rotatePoint(float radians) {
+    Vector2 Vector2::rotatePoint(float radians) const {
         float cosA = std::cos(radians);
         float sinA = std::sin(radians);
-        x =  (x * cosA) - (y * sinA);
-        y =  (x * sinA) + (y * cosA);
-        return *this;
+        return {
+            (x * cosA) - (y * sinA),
+            (x * sinA) + (y * cosA)
+        };
+
     }
 
 #pragma endregion
