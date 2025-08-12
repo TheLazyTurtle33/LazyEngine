@@ -39,6 +39,7 @@ namespace LazyEngine {
                       "T must derive from property::Property");
         auto prop = std::make_unique<T>(std::forward<Args>(args)...);
         T* ptr = prop.get();
+        prop->setParent(this);
         m_properties.emplace_back(std::move(prop));
         return ptr;
     }

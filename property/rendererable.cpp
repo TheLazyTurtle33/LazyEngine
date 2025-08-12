@@ -7,10 +7,13 @@
 #include <utility>
 
 namespace property {
-    rendererable::rendererable() = default;
+
+    rendererable::rendererable(): m_shape(Shape::NULLShape) {
+        m_shape = Shape::NULLShape;
+    } ;
 
     rendererable::rendererable(Shape::Shape shape, const Colour::Colour colour): m_shape(std::move(shape)) {
-        m_shape = std::move(shape);
+        // m_shape = std::move(shape);
         m_shape.colour = colour;
     }
 
@@ -32,14 +35,20 @@ namespace property {
         m_transform = transform;
     }
 
-    Shape::Shape rendererable::getShape() const {
+    Shape::Shape rendererable::getShapeTransformed() const {
         if (m_transform == nullptr) return m_shape;
-        Shape::Shape out(m_shape);
-        out.vertices.clear();
-        for (auto& v : m_shape.vertices) {
-            out.vertices.push_back((v + m_transform->position)*m_transform->scale);
+        std::vector<LEMath::Vector2> transformedVerts;
+        transformedVerts.reserve(m_shape.vertices.size());
+
+        for (auto v : m_shape.vertices) {
+            v *= m_transform->scale;      // scale
+            v += m_transform->position;   // translate
+            transformedVerts.push_back(v);
         }
-        return out;
+
+        Shape::Shape result(transformedVerts, m_shape.indices);
+        result.colour = m_shape.colour; // preserve colour
+        return result;
 
     }
 } // property

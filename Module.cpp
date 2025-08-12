@@ -59,7 +59,7 @@ namespace LazyEngine {
         std::vector<render::renderObject> objects;
         if (auto* r = getProperty<property::rendererable>()) {
                 // use existing
-            const render::renderObject object{r->getShape()};
+            const render::renderObject object{r->getShapeTransformed()};
             objects.push_back(object);
         }
         for (auto &child : m_children) {
