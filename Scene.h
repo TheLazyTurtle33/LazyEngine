@@ -12,9 +12,9 @@
 namespace LazyEngine {
 class Scene {
     public:
-        void init();
-        void update();
-        void render();
+        void start();
+        void update(double deltaT);
+        // void render();
         void destroy();
 
         void addRootModule(LazyEngine::Module* module);

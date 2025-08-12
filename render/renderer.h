@@ -18,7 +18,7 @@ namespace render {
 
 class renderer {
 public:
-    bool init(int width, int height, const char* title);
+    bool start(int width, int height, const char* title);
     void clear(); // defaults to black
     void clear(Colour::Colour colour);
     void draw(const renderObject& object);

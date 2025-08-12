@@ -43,10 +43,10 @@ static const char* fragmentShaderSource = R"(
         glViewport(0, 0, width, height);
     }
 
-    bool renderer::init(int width, int height, const char* title) {
+    bool renderer::start(int width, int height, const char* title) {
         m_windowSize = {width,height};
         if (!glfwInit()) {
-            std::cerr << "Failed to init GLFW\n";
+            std::cerr << "Failed to start GLFW\n";
             return false;
         }
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -63,7 +63,7 @@ static const char* fragmentShaderSource = R"(
         glfwSetWindowUserPointer(m_window, this);
 
         if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-            std::cerr << "Failed to init GLAD\n";
+            std::cerr << "Failed to start GLAD\n";
             return false;
         }
         glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);

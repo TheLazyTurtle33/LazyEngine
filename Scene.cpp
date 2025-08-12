@@ -5,16 +5,23 @@
 #include "Scene.h"
 
 namespace LazyEngine {
-    void Scene::init() {
+    void Scene::start() {
+        for (auto &module : m_root_modules) {
+            module->start();
+        }
     }
 
-    void Scene::update() {
+    void Scene::update(double deltaT) {
+        for (auto &module : m_root_modules) {
+            module->update(deltaT);
+        }
     }
 
-    void Scene::render() {
-    }
+    // void Scene::render() {
+    // }
 
     void Scene::destroy() {
+
     }
 
     void Scene::addRootModule(LazyEngine::Module *module) {
