@@ -24,7 +24,8 @@ namespace LazyEngine {
     std::vector<render::renderObject> Scene::getRenderObjects() const {
         std::vector<render::renderObject> objects;
         for (auto &modules : m_root_modules) {
-            objects.insert(objects.end(), modules->getRenderObjects().begin(), modules->getRenderObjects().end());
+            std::vector<render::renderObject> objs = modules->getRenderObjects();
+            objects.insert(objects.end(), objs.begin(), objs.end());
         }
         return objects;
     }

@@ -17,9 +17,12 @@ class rendererable : public Property {
 public:
     rendererable();
     explicit rendererable(Shape::Shape shape) : m_shape(std::move(shape)){};
+    explicit rendererable(Shape::Shape shape, Colour::Colour colour);
     // void start();
     // void update(int deltaT);
     // void destroy();
+
+    void setParent(LazyEngine::Module *parent) override;
 
     void setShape(Shape::Shape shape);
     void setShape(std::vector<LEMath::Vector2> verts, std::vector<unsigned int> inds);

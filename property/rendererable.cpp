@@ -7,6 +7,18 @@
 #include <utility>
 
 namespace property {
+    rendererable::rendererable() = default;
+
+    rendererable::rendererable(Shape::Shape shape, const Colour::Colour colour): m_shape(std::move(shape)) {
+        m_shape = std::move(shape);
+        m_shape.colour = colour;
+    }
+
+    void rendererable::setParent(LazyEngine::Module *parent) {
+        Property::setParent(parent);
+        m_transform = parent->getProperty<Transform2D>();
+    }
+
     void rendererable::setShape(Shape::Shape shape) {
         m_shape = std::move(shape);
     }

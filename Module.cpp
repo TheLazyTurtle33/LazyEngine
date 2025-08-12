@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include <vector>
 #include "Module.h"
-#include <algorithm>
 
 #include "property/rendererable.h"
 #include "render/renderObject.h"
@@ -86,67 +85,6 @@ namespace LazyEngine {
         for (auto &property : m_properties) {
             property->update(deltaT);
         }
-    }
-
-    template <typename T, typename... Args>
-T* Module::addProperty(Args&&... args) {
-        static_assert(std::is_base_of<property::Property, T>::value,
-                      "T must derive from property::Property");
-        auto prop = std::make_unique<T>(std::forward<Args>(args)...);
-        T* ptr = prop.get();
-        m_properties.emplace_back(std::move(prop));
-        return ptr;
-    }
-
-    template <typename T>
-    void Module::removeProperty() {
-        static_assert(std::is_base_of<property::Property, T>::value,
-                      "T must derive from property::Property");
-        m_properties.erase(
-            std::remove_if(m_properties.begin(), m_properties.end(),
-                [](const std::unique_ptr<property::Property>& p) {
-                    return dynamic_cast<T*>(p.get()) != nullptr;
-                }),
-            m_properties.end()
-        );
-    }
-
-    template <typename T>
-    std::vector<T*> Module::getPropertyAll() const {
-        static_assert(std::is_base_of<property::Property, T>::value,
-                      "T must derive from property::Property");
-        std::vector<T*> result;
-        for (auto& p : m_properties) {
-            if (auto casted = dynamic_cast<T*>(p.get())) {
-                result.push_back(casted);
-            }
-        }
-        return result;
-    }
-
-    template <typename T>
-    T* Module::getProperty(size_t index) const {
-        static_assert(std::is_base_of<property::Property, T>::value,
-                      "T must derive from property::Property");
-        size_t count = 0;
-        for (auto& p : m_properties) {
-            if (auto casted = dynamic_cast<T*>(p.get())) {
-                if (count++ == index) return casted;
-            }
-        }
-        return nullptr;
-    }
-
-    template <typename T>
-    T* Module::getPropertyLast() const {
-        static_assert(std::is_base_of<property::Property, T>::value,
-                      "T must derive from property::Property");
-        for (auto it = m_properties.rbegin(); it != m_properties.rend(); ++it) {
-            if (auto casted = dynamic_cast<T*>(it->get())) {
-                return casted;
-            }
-        }
-        return nullptr;
     }
 
 } // LazyEngine
