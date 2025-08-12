@@ -22,7 +22,7 @@ property::Transform2D::Transform2D(const LEMath::Vector2 &position, const LEMath
 //     return;
 // }
 //
-// void property::Transform2D::update(int deltaT) {
+// void property::Transform2D::update(double deltaT) {
 //     return;
 // }
 
@@ -52,45 +52,75 @@ void property::Transform2D::setRotationR(const float radians) {
 }
 
 void property::Transform2D::translate(const LEMath::Vector2 &translation) {
+    position += translation;
 }
 
 void property::Transform2D::translate(float x, float y) {
+    position += LEMath::Vector2(x, y);
 }
 
 void property::Transform2D::translate(int x, int y) {
+    position += LEMath::Vector2(static_cast<float>(x), static_cast<float>(y));
 }
 
 void property::Transform2D::translate(const Transform2D &translation) {
+    position += translation.position;
 }
 
 void property::Transform2D::translate(const Transform2D *translation) {
+    position += translation->position;
 }
 
 void property::Transform2D::rotate(int degrees) {
+    rotation += degrees;
+    rotation = std::fmod(rotation ,360.f);
+    if (rotation < 0) {
+        rotation += 360.f;
+    }
 }
 
 void property::Transform2D::rotate(float degrees) {
+    rotation += degrees;
+    rotation = std::fmod(rotation ,360.f);
+    if (rotation < 0) {
+        rotation += 360.f;
+    }
 }
 
 void property::Transform2D::rotateR(int radians) {
+    rotation += static_cast<float>(radians*(180.f/LEMath::PI));
+    rotation = std::fmod(rotation ,360.f);
+    if (rotation < 0) {
+        rotation += 360.f;
+    }
 }
 
 void property::Transform2D::rotateR(float radians) {
+    rotation += static_cast<float>(radians*(180.f/LEMath::PI));
+    rotation = std::fmod(rotation ,360.f);
+    if (rotation < 0) {
+        rotation += 360.f;
+    }
 }
 
-void property::Transform2D::Scale(const LEMath::Vector2 &scale) {
+void property::Transform2D::scaleUp(const LEMath::Vector2 &scale) {
+    this->scale *= scale;
 }
 
-void property::Transform2D::Scale(float x, float y) {
+void property::Transform2D::scaleUp(const float x, const float y) {
+    this->scale *= LEMath::Vector2(x, y);
 }
 
-void property::Transform2D::Scale(int x, int y) {
+void property::Transform2D::scaleUp(int x, int y) {
+    this->scale *= LEMath::Vector2(static_cast<float>(x), static_cast<float>(y));
 }
 
-void property::Transform2D::Scale(float scale) {
+void property::Transform2D::scaleUp(float scale) {
+    this->scale *= scale;
 }
 
-void property::Transform2D::Scale(int scale) {
+void property::Transform2D::scaleUp(int scale) {
+    this->scale *= static_cast<float>(scale);
 }
 
 

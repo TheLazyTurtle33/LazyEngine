@@ -15,7 +15,7 @@ public:
     // ~Transform2D();
 
     // void start();
-    // void update(int deltaT);
+    // void update(double deltaT);
     void destroy() override;
 
     void setPosition(const LEMath::Vector2& position);
@@ -42,11 +42,11 @@ public:
     void rotateR(int radians);
     void rotateR(float radians);
 
-    void Scale(const LEMath::Vector2& scale);
-    void Scale(float x, float y);
-    void Scale(int x, int y);
-    void Scale(float scale);
-    void Scale(int scale);
+    void scaleUp(const LEMath::Vector2& scale);
+    void scaleUp(float x, float y);
+    void scaleUp(int x, int y);
+    void scaleUp(float scale);
+    void scaleUp(int scale);
 
     [[nodiscard]] LEMath::Vector2 getPosition() const;
     [[nodiscard]] LEMath::Vector2 getScale() const;

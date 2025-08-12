@@ -19,7 +19,7 @@ public:
     explicit rendererable(Shape::Shape shape) : m_shape(std::move(shape)){};
     explicit rendererable(Shape::Shape shape, Colour::Colour colour);
     // void start();
-    // void update(int deltaT);
+    // void update(double deltaT);
     // void destroy();
 
     void setParent(LazyEngine::Module *parent) override;

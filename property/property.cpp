@@ -15,7 +15,7 @@ namespace property {
     void Property::start() {
     }
 
-    void Property::update(int deltaT) {
+    void Property::update(double deltaT) {
     }
 
     void Property::destroy() {

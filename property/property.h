@@ -16,7 +16,7 @@ namespace property {
         Property();
         virtual ~Property() = default;
         virtual void start();
-        virtual void update(int deltaT);
+        virtual void update(double deltaT);
         virtual void destroy();
         virtual void setParent(LazyEngine::Module* parent);
 

@@ -78,7 +78,7 @@ namespace LazyEngine {
         }
     }
 
-    void Module::update(int deltaT) {
+    void Module::update(double deltaT) {
         for (auto &child : m_children) {
             child->update(deltaT);
         }

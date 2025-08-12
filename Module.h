@@ -30,8 +30,8 @@ namespace LazyEngine {
         const std::string& getName() const noexcept;
 
     public:
-        void start();
-        void update(int deltaT);
+        virtual void start();
+        virtual void update(double deltaT);
 
     template <typename T, typename... Args>
     T* addProperty(Args&&... args) {
