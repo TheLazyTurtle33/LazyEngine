@@ -3,9 +3,18 @@
 //
 
 #include "transform.h"
+
+#include <cmath>
+
 #include "property.h"
 
 property::Transform2D::Transform2D() = default;
+
+property::Transform2D::Transform2D(const LEMath::Vector2 &position, const LEMath::Vector2 &scale, float rotation) {
+    this->position = position;
+    this->scale = scale;
+    this->rotation = rotation;
+}
 
 // property::Transform2D::~Transform2D() = default;
 //
@@ -42,6 +51,93 @@ void property::Transform2D::setRotationR(const float radians) {
     rotation = static_cast<float>(radians*(180.f/LEMath::PI));
 }
 
+void property::Transform2D::translate(const LEMath::Vector2 &translation) {
+}
+
+void property::Transform2D::translate(float x, float y) {
+}
+
+void property::Transform2D::translate(int x, int y) {
+}
+
+void property::Transform2D::translate(const Transform2D &translation) {
+}
+
+void property::Transform2D::translate(const Transform2D *translation) {
+}
+
+void property::Transform2D::rotate(int degrees) {
+}
+
+void property::Transform2D::rotate(float degrees) {
+}
+
+void property::Transform2D::rotateR(int radians) {
+}
+
+void property::Transform2D::rotateR(float radians) {
+}
+
+void property::Transform2D::Scale(const LEMath::Vector2 &scale) {
+}
+
+void property::Transform2D::Scale(float x, float y) {
+}
+
+void property::Transform2D::Scale(int x, int y) {
+}
+
+void property::Transform2D::Scale(float scale) {
+}
+
+void property::Transform2D::Scale(int scale) {
+}
+
+
+LEMath::Vector2 property::Transform2D::getPosition() const {
+    return position;
+}
+
+LEMath::Vector2 property::Transform2D::getScale() const {
+    return scale;
+}
+
+float property::Transform2D::getRotation() const {
+    return rotation;
+}
+
+float property::Transform2D::getRotationR() const {
+    return rotation*(LEMath::PI/180.f);
+}
+
+LEMath::Vector2 property::Transform2D::getRight() const {
+    return {std::sin(rotation*(LEMath::PI/180.f)), -std::cos(rotation*(LEMath::PI/180.f))};
+}
+
+LEMath::Vector2 property::Transform2D::getUp() const {
+    return {std::cos(rotation*(LEMath::PI/180.f)), std::sin(rotation*(LEMath::PI/180.f))};
+}
+
+LEMath::Vector2 property::Transform2D::getWorldPosition() const {
+    return position;
+}
+
+LEMath::Vector2 property::Transform2D::getWorldScale() const {
+    return scale;
+}
+
+float property::Transform2D::getWorldRotation() const {
+    return rotation;
+}
+
+float property::Transform2D::getWorldRotationR() const {
+    return rotation*(LEMath::PI/180.f);
+}
+
+LEMath::Vector2 property::Transform2D::getWorldForward() const {
+    return {std::cos(rotation*(LEMath::PI/180.f)), std::sin(rotation*(LEMath::PI/180.f))};
+}
+
 void property::Transform2D::setPosition(const float x, const float y) {
     position = LEMath::Vector2(x, y);
 }
@@ -71,6 +167,9 @@ void property::Transform2D::setScale(const int scale) {
 }
 
 void property::Transform2D::lookAt(const LEMath::Vector2 &target) {
+    LEMath::Vector2 dir = target - position;
+    float angle = std::atan2(dir.y, dir.x);
+    rotation = static_cast<float>(angle*(180.f/LEMath::PI));
 }
 
 void property::Transform2D::lookAt(float x, float y) {
