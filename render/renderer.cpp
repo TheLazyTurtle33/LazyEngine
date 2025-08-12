@@ -147,7 +147,7 @@ static const char* fragmentShaderSource = R"(
     }
 
     LEMath::Vector2 renderer::toNDC(const LEMath::Vector2& position,const LEMath::Vector2i& windowSize) {
-        return {position.x / (windowSize.x/2.0f)-1.0f, position.y / (windowSize.y/2.0f)-1.0f};
+        return {position.x / (windowSize.x/2.0f), position.y / (windowSize.y/2.0f)};
     }
 
     renderObject renderer::toNDC(renderObject objs, const LEMath::Vector2i &windowSize) {
